@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Reformulate with an LLM",
+    "version": "1.0",
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "storage"
+    ],
+    "background": {
+        "service_worker": "src/background/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["http://*/*", "https://*/*", "file:///C:/Users/grunt/Downloads/test.html"],
+            "js": ["src/content/module.js", "src/content/content.js"]
+        }
+    ],
+    "options_page": "src/option_page/options.html"
+}
