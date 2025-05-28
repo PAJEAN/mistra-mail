@@ -11,7 +11,6 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
-
 // A function that is called back when the menu item is clicked.
 chrome.contextMenus.onClicked.addListener(
     /**

@@ -19,7 +19,7 @@ const TAG_IDS = {
 
 const TEMPLATE = document.createElement('template');
 TEMPLATE.innerHTML = /* html */`
-    <style>
+<style>
     @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
     
     /* Positioning */
@@ -203,7 +203,7 @@ TEMPLATE.innerHTML = /* html */`
                     <option value="familiar">Familiar</option>
                 </select>
             </label>
-            <label>Traduire
+            <label>Translate
                 <select id="${TAG_IDS.translate_select}">
                     <option value="">Select a language...</option>
                     <option value="anglais">English</option>
@@ -218,7 +218,7 @@ TEMPLATE.innerHTML = /* html */`
             <textarea name="" id="${TAG_IDS.output_textarea}"></textarea>
         </div>
 
-        <button id="${TAG_IDS.send_btn}" class="text-btn">Envoyer</button>
+        <button id="${TAG_IDS.send_btn}" class="text-btn">Send</button>
     </section>
 </main>
 `;
