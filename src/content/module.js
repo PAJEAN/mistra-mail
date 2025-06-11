@@ -28,7 +28,7 @@ TEMPLATE.innerHTML = /* html */`
     /* Text */
     /* Other */
 
-    :root {
+    :host {
         --background-color: #e6e7ee;
         --border-color: #d1d9e6;
         --box-shadow-inset-color: #c5c5c5;
@@ -53,6 +53,7 @@ TEMPLATE.innerHTML = /* html */`
         padding: 1.25rem 1rem;
         height: 50vh;
         width: 75vw;
+        z-index: 2147483647;
         /* Color */  
         background-color: var(--background-color);
         /* Text */
@@ -141,7 +142,7 @@ TEMPLATE.innerHTML = /* html */`
         resize: none;
     }
 
-    /* Neomorphism */
+    /* Neumorphism */
     .text-btn, .icon-btn {
         /* Display & Box Model */
         border: 1px solid var(--border-color);
@@ -203,9 +204,8 @@ TEMPLATE.innerHTML = /* html */`
                     <option value="familiar">Familiar</option>
                 </select>
             </label>
-            <label>Translate
+            <label>Language
                 <select id="${TAG_IDS.translate_select}">
-                    <option value="">Select a language...</option>
                     <option value="anglais">English</option>
                     <option value="français">French</option>
                     <option value="espagnol">Spanish</option>
@@ -246,8 +246,8 @@ class MyCustomElement {
         // Config attributes.
         this.#initial_height = '50vh';
         this.#initial_width = '400px';
-        this.#minimum_app_height = 200;
-        this.#minimum_app_width = 200;
+        this.#minimum_app_height = 350;
+        this.#minimum_app_width = 350;
         
         this.#height = 0;
         this.#width = 0;
@@ -265,9 +265,7 @@ class MyCustomElement {
         return language.value;
     }
     get text() {
-        let text = /** @type {HTMLTextAreaElement} */ (this.#shadow.querySelector(`#${TAG_IDS.input_textarea}`));
-        console.log(text);
-        
+        let text = /** @type {HTMLTextAreaElement} */ (this.#shadow.querySelector(`#${TAG_IDS.input_textarea}`));        
         return text.value;
     }
 
@@ -280,6 +278,7 @@ class MyCustomElement {
         this.#initOptionBtn();
         this.#initResizeArea();
         this.#initSendBtn();
+        this.#initSelectLanguage();
     }
 
     #initCloseBtn() {
@@ -367,6 +366,18 @@ class MyCustomElement {
         });
     }
 
+    async #initSelectLanguage() {
+        // @ts-ignore
+        let data = await chrome.storage.local.get('prefLanguage');
+            
+        if (!data.prefLanguage) {
+            return;
+        }
+        
+        let language = /** @type {HTMLSelectElement} */ (this.#shadow.querySelector(`#${TAG_IDS.translate_select}`));
+        language.value = data.prefLanguage;
+    }
+
     #initSendBtn() {
         let send_btn = this.#shadow.querySelector(`#${TAG_IDS.send_btn}`);
         send_btn?.addEventListener('click', async () => {
@@ -378,7 +389,7 @@ class MyCustomElement {
     }
 
     #systemPrompt() {
-        let prompt = ["Tu es un assistant qui reformule et corrige les mails. Tu dois proposer un objet au mail."];
+        let prompt = ["Tu es un assistant qui reformule et corrige les mails. Tu ne dois pas ajouter de commentaires ou d'annotations qui ne sont pas directement liés à la correction ou à la reformulation. Propose un objet de mail pertinent qui résume le contenu."];
         switch (this.tone) {
             case 'neutral':
                 prompt.push('Utilise un ton neutre.');
@@ -392,7 +403,7 @@ class MyCustomElement {
         }
         let language = this.language;
         if (language !== '') {
-            prompt.push(`Traduis les mails en ${language}.`);
+            prompt.push(`Tu dois rédiger le mail en ${language}.`);
         }
         return prompt.join(' ');
     }
@@ -421,6 +432,9 @@ class MyCustomElement {
 
         let api_key = data.apiKey;        
 
+        console.log(this.#systemPrompt());
+        console.log(this.text);
+        
         try {
             let response = await fetch('https://api.mistral.ai/v1/chat/completions', {
                 method: 'POST',
@@ -442,12 +456,16 @@ class MyCustomElement {
             // let response = {ok: 200};
             // let data = {choices: [{message: {content: "OK c'est mon texte!"}}]};
 
-
+            console.log(`Status: ${response.status}`);
+            
 
             if (response.ok) {
                 let reformulated_text = data.choices?.[0]?.message?.content;
                 return reformulated_text === undefined ? '[An error has occurred]': reformulated_text;
             } else {
+                if (response.status == 429) {
+                    return '[Service tier capacity exceeded for this model]';
+                }
                 console.warn('API error messages :', data);
                 return '[An error has occurred]';
             }
