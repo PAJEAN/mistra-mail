@@ -229,8 +229,10 @@ class MyCustomElement {
     #initial_height;
     #initial_width;
     #main_tag;
+    #max_attempt;
     #minimum_app_height;
     #minimum_app_width;
+    #nb_attempt;
     #shadow;
     #tag;
     #width;
@@ -251,6 +253,9 @@ class MyCustomElement {
         
         this.#height = 0;
         this.#width = 0;
+
+        this.#nb_attempt = 0; // Number of attempt to send a request to the LLM.
+        this.#max_attempt = 5;
 
         this.#init();
     }
@@ -430,10 +435,7 @@ class MyCustomElement {
             return '[No api key found, you must enter your key in the extension options ⚙️]';
         }
 
-        let api_key = data.apiKey;        
-
-        console.log(this.#systemPrompt());
-        console.log(this.text);
+        let api_key = data.apiKey;
         
         try {
             let response = await fetch('https://api.mistral.ai/v1/chat/completions', {
@@ -451,25 +453,39 @@ class MyCustomElement {
                 })
             });
 
-            let data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch (parse_error) {
+                console.error('Impossible to parse JSON response', parse_error);
+                return '[Invalid server response format. Possible 401 error, please check your credentials]';
+            }
 
             // let response = {ok: 200};
             // let data = {choices: [{message: {content: "OK c'est mon texte!"}}]};
 
-            console.log(`Status: ${response.status}`);
-            
+            console.log(`Status: ${response.status}`);            
 
             if (response.ok) {
                 let reformulated_text = data.choices?.[0]?.message?.content;
                 return reformulated_text === undefined ? '[An error has occurred]': reformulated_text;
             } else {
+                if (response.status == 401) {
+                    return '[Request was not successful because it lacks valid authentication credentials]';
+                }
                 if (response.status == 429) {
-                    return '[Service tier capacity exceeded for this model]';
+                    this.#nb_attempt += 1;
+                    if (this.#nb_attempt > this.#max_attempt) {
+                        this.#nb_attempt = 0;
+                        return '[Service tier capacity exceeded for this model]';
+                    } else {
+                        return this.SendMistralRequest();
+                    }
                 }
                 console.warn('API error messages :', data);
                 return '[An error has occurred]';
             }
-        } catch(error) {
+        } catch(error) {            
             console.error("Network error or fetch failure :", error);
             return '[An error has occurred]';
         }

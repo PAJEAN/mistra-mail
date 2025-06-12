@@ -3,8 +3,7 @@ const DATA_NAMES = {
     prefLanguage: 'prefLanguage'
 }
 
-
-// Charger la clé existante
+// Loading existing key.
 chrome.storage.local.get(DATA_NAMES.apiKey, (data) => {
     if (data[DATA_NAMES.apiKey]) {
         document.getElementById('api-key').value = data[DATA_NAMES.apiKey];
@@ -17,7 +16,6 @@ chrome.storage.local.get(DATA_NAMES.prefLanguage, (data) => {
         language.value = data[DATA_NAMES.prefLanguage];
     }
 });
-
 
 document.getElementById('save').addEventListener('click', () => {
     let key = document.getElementById('api-key').value.trim();

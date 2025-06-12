@@ -20,8 +20,11 @@ chrome.contextMenus.onClicked.addListener(
      */
     (info, tab) => {
         if (info.menuItemId === MENU_ITEM_ID && tab.id) {        
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, { type: "reformulate", text: info.selectionText });                
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {       
+                chrome.tabs.sendMessage(
+                    tabs[0].id,
+                    {type: "reformulate", text: info.selectionText}
+                ).catch(error => { console.log(error) });
             });
         }
     }
