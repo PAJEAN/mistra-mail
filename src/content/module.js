@@ -206,9 +206,11 @@ TEMPLATE.innerHTML = /* html */`
             </label>
             <label>Language
                 <select id="${TAG_IDS.translate_select}">
-                    <option value="anglais">English</option>
                     <option value="français">French</option>
+                    <option value="allemand">German</option>
+                    <option value="anglais">English</option>
                     <option value="espagnol">Spanish</option>
+                    <option value="italien">Italian</option>
                 </select>
             </label>
         </div>

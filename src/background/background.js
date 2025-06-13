@@ -6,7 +6,7 @@ const MENU_ITEM_ID = 'reformulate-text';
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: MENU_ITEM_ID, // Unique identifier to assign to this menu item. Required for event pages. Must not be the same as any other ID in this extension.
-        title: "Reformuler avec Mistral",
+        title: "Open Mistra'Mail",
         contexts: ["selection"] // List of contexts in which this menu item will appear. The default value is ['page'] and with ['selection'] value, the item appears when some content is selected.
     });
 });

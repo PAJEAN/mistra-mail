@@ -12,7 +12,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["http://*/*", "https://*/*", "file:///C:/Users/grunt/Downloads/test.html"],
+            "matches": ["http://*/*", "https://*/*"],
             "js": ["src/content/module.js", "src/content/content.js"]
         }
     ],
