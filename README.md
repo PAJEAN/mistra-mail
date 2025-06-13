@@ -1,10 +1,10 @@
-# Mistral Mail Rewriter Extension
+# Mistra'Mail Rewriter Extension
 
 <div align=center>
   <img src="images/interface.png" width="500px">
 </div>
 
-**Mistral Mail Rewriter** is a browser extension designed to **correct**, **rephrase**, or **translate** emails using the [Mistral AI](https://mistral.ai) API.
+**Mistra'Mail Rewriter** is a browser extension designed to **correct**, **rephrase**, or **translate** emails using the [Mistral AI](https://mistral.ai) API.
 
 ✅ Tested on **Chrome**, **Firefox**, and **Brave**.
 
@@ -42,4 +42,4 @@ There are two ways to use the extension:
   Select any email or text → Right-click → Choose **"Open Mistra'Mail"**.
 
 * **Popup method**:
-  Click on the extension icon → Click **Open** → Use the interface.
+  Click on the extension icon → Click **App** → Use the interface.
