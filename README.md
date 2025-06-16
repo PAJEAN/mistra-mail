@@ -4,11 +4,6 @@
   <img src="images/icon_128.png">
 </div>
 
-<div align=center>
-  <img src="images/interface.png" width="500px">
-</div>
-
-
 **Mistra'Mail Rewriter** is a browser extension designed to **correct**, **rephrase**, or **translate** emails using the [Mistral AI](https://mistral.ai) API.
 
 ✅ Tested on **Chrome**, **Firefox**, and **Brave**.
@@ -48,3 +43,7 @@ There are two ways to use the extension:
 
 * **Popup method**:
   Click on the extension icon → Click **App** → Use the interface.
+
+<div align=center>
+  <img src="images/interface.png" width="500px">
+</div>

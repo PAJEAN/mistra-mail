@@ -75,6 +75,8 @@ TEMPLATE.innerHTML = /* html */`
         display: flex;
         justify-content: space-between;
         align-items: center;
+        /* Color */
+        color: var(--text-color);
         /* Text */
         font-size: calc(1.55rem);
         font-weight: 400;
@@ -134,8 +136,9 @@ TEMPLATE.innerHTML = /* html */`
         padding: .6rem .75rem;
         min-height: 50%;
         width: 100%;
-        /* Color */  
+        /* Color */
         background-color: var(--background-color);
+        color: var(--text-color);
         /* Text */
         font-weight: 300;
         /* Other */
@@ -188,7 +191,7 @@ TEMPLATE.innerHTML = /* html */`
         </div>
 
         <div class="panel-top">
-            <div>Mistra'mail</div>
+            <div class="app-name">Mistra'mail</div>
             <div class="icon-panel-top">
                 <button id="${TAG_IDS.option_btn}" class="icon-btn" title="Option">⚙️</button>
                 <button id="${TAG_IDS.app_minimize_btn}" class="icon-btn" title="Minimize">🗕</button>
@@ -248,8 +251,8 @@ class MyCustomElement {
         // Main tag.
         this.#main_tag = /** @type {HTMLElement} */ (this.#shadow.querySelector('main'));
         // Config attributes.
-        this.#initial_height = '50vh';
-        this.#initial_width = '400px';
+        this.#initial_height = '70vh';
+        this.#initial_width = '40vw';
         this.#minimum_app_height = 350;
         this.#minimum_app_width = 350;
         
@@ -396,7 +399,8 @@ class MyCustomElement {
     }
 
     #systemPrompt() {
-        let prompt = ["Tu es un assistant qui reformule et corrige les mails. Tu ne dois pas ajouter de commentaires ou d'annotations qui ne sont pas directement liés à la correction ou à la reformulation. Propose un objet de mail pertinent qui résume le contenu."];
+        // let prompt = ["Tu es un assistant qui reformule et corrige les mails. Tu ne dois pas ajouter de commentaires ou d'annotations qui ne sont pas directement liés à la correction ou à la reformulation. Propose un objet de mail pertinent qui résume le contenu. Tu peux ajouter des phrases supplémentaires pour améliorer la fluidité."];
+        let prompt = ["Tu es un assistant spécialisé dans la reformulation intégrale de mails. Réécris entièrement le mail fourni en conservant son sens, mais en utilisant d'autres formulations et tournures. Propose un objet de mail pertinent qui résume le contenu. Tu ne dois pas inclure de commentaires ou d’explications : seulement l’objet proposé et la version reformulée du mail, prête à être envoyée."]
         switch (this.tone) {
             case 'neutral':
                 prompt.push('Utilise un ton neutre.');
@@ -451,7 +455,8 @@ class MyCustomElement {
                     messages: [
                         { role: 'system', content: this.#systemPrompt() },
                         { role: 'user', content: this.text }
-                    ]
+                    ],
+                    temperature: 0.2
                 })
             });
 

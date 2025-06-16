@@ -17,7 +17,12 @@
         }
     ],
     "action": {
-        "default_popup": "src/popup/popup.html"
+        "default_popup": "src/popup/popup.html",
+        "default_icon": "images/icon_main.png"
+    },
+    "icons": {
+        "48": "images/icon_48.png",
+        "128": "images/icon_128.png"
     },
     "options_page": "src/option_page/options.html"
 }
