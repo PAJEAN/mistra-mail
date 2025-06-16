@@ -456,7 +456,8 @@ class MyCustomElement {
                         { role: 'system', content: this.#systemPrompt() },
                         { role: 'user', content: this.text }
                     ],
-                    temperature: 0.2
+                    temperature: 0.2,
+                    presence_penalty: 0.5
                 })
             });
 
