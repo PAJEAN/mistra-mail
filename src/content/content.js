@@ -1,5 +1,5 @@
 // @ts-check
-console.log("✅ Content file loaded");
+// console.log("✅ Content file loaded");
 
 /**
  * Listen sent message.

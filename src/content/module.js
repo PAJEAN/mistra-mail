@@ -1,5 +1,5 @@
 // @ts-check
-console.log("✅ Module file loaded");
+// console.log("✅ Module file loaded");
 
 const TAG_IDS = {
     app_container: 'app-container',
